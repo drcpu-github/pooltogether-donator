@@ -1,0 +1,11 @@
+{
+    "network-id": {
+        "priority_fee": "",
+        "max_fee": "",
+        "stake_prize_pool": "",
+        "prize_token": "",
+        "base_token": "",
+        "pool": "",
+        "recipient": ""
+    }
+}
