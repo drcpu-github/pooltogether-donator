@@ -91,7 +91,8 @@ contract Donator is Ownable {
         emit BaseTokenSwapped(etherSwapped);
 
         // Send all ETH to the recipient
-        payable(recipient).transfer(etherSwapped);
+        (bool sent, ) = payable(recipient).call{value: etherSwapped}("");
+        require(sent, "donate-failed");
         emit EtherDonated(recipient, etherSwapped);
     }
 
