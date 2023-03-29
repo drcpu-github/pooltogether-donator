@@ -87,7 +87,7 @@ contract Donator is Ownable {
         uint256 baseTokenWithdraw = withdrawFromPool();
         emit BaseTokenWithdrawn(baseTokenWithdraw);
 
-        uint256 etherSwapped = swapBaseTokenForEth();
+        uint256 etherSwapped = swapBaseTokenForEth(baseTokenWithdraw);
         emit BaseTokenSwapped(etherSwapped);
 
         // Send all ETH to the recipient
@@ -108,13 +108,12 @@ contract Donator is Ownable {
     }
 
     /// @notice Helper function to approve and swap the base token to ETH
-    function swapBaseTokenForEth() internal returns (uint256 amountOut) {
+    function swapBaseTokenForEth(uint256 _amountIn) internal returns (uint256 amountOut) {
         // Approve the withdrawn token for swapping
-        uint256 amountIn = baseToken.balanceOf(address(this));
-        baseToken.approve(address(pool), amountIn);
+        baseToken.approve(address(pool), _amountIn);
 
-        // Swap amountIn of the token (index 1) for amountOutMinimum ETH (index 0)
-        uint256 amountOutMinimum = amountIn * minimumPrice / 1e18;
-        amountOut = pool.exchange(1, 0, amountIn, amountOutMinimum);
+        // Swap _amountIn of the token (index 1) for amountOutMinimum ETH (index 0)
+        uint256 amountOutMinimum = _amountIn * minimumPrice / 1e18;
+        amountOut = pool.exchange(1, 0, _amountIn, amountOutMinimum);
     }
 }
